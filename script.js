@@ -17,28 +17,38 @@ $(document).ready(function () {
     initialRender();
 
     function initialRender(){
-        $("#recentList").empty();
+        //$("#recentList").empty();
         var localCitiesArr= JSON.parse(localStorage.getItem("recentCities"));
-
+        var recentList=$("#recentList");
         if(localCitiesArr !== null){
-            var recentList=$("#recentList");
-
+            recentList.removeClass("hide");
+            recentList.addClass("list-group list-group-flush");
             for(var lc=0; lc<localCitiesArr.length; lc++) {
                 //console.log(localCitiesArr[lc]);
-                var newCityItem=$("<li>")
+                var newCityItem="#item"+lc;
+                console.log(newCityItem);
+                var temp=$(newCityItem);
+                temp.text(localCitiesArr[lc]);
+                temp.attr("data-index",localCitiesArr[lc]);
+                temp.attr("id","storedCity");
+                /*var newcityBtn=$("<button>");
+                newCityItem.append(newcityBtn);
                 newCityItem.attr("class","list-group-item");
-                newCityItem.text(localCitiesArr[lc]);
-                newCityItem.attr("data-index",localCitiesArr[lc]);
-                newCityItem.attr("id","storedCity");
-                recentList.append(newCityItem);
+                newcityBtn.text(localCitiesArr[lc]);
+                newcityBtn.attr("data-index",localCitiesArr[lc]);
+                newcityBtn.attr("id","storedCity");
+                recentList.append(newCityItem);*/
             };
+        }
+        else{
+            recentList.attr("class","hide");
         };
         //console.log(localCitiesArr);
 
 
     };
 
-    $("<li>").on("click", getWeatherRecent)
+    $(".list-group-item").on("click", getWeatherRecent)
  
     function getWeather() {
         event.preventDefault();
@@ -174,19 +184,19 @@ $(document).ready(function () {
 
     function getWeatherRecent() {
         event.preventDefault();
-        console.log("clicked");
-        /*var gtWArr= JSON.parse(localStorage.getItem("recentCities"));
+
+        var gtWArr= JSON.parse(localStorage.getItem("recentCities"));
         recentSearch=gtWArr;
         
         $("#mainInfo-section").empty();
         cityName=($(this).attr("data-index"));
-        console.log(cityName);
+        //console.log(cityName);
         //=$("#searchedCity").val();
         //recentSearch.splice(1, 0, cityName);
-        recentSearch.unshift(cityName);
-        var recentSearchArr=JSON.stringify(recentSearch);
-        localStorage.setItem("recentCities",recentSearchArr);
-        console.log(recentSearch);
+        //recentSearch.unshift(cityName);
+        //var recentSearchArr=JSON.stringify(recentSearch);
+        //localStorage.setItem("recentCities",recentSearchArr);
+        //console.log(recentSearch);
         var queryURL ="https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid="+apiKey+"&units="+units;
         $.ajax({
             url: queryURL,
@@ -301,6 +311,6 @@ $(document).ready(function () {
             });
 
         });
-        initialRender();*/
+        initialRender();
     };
 });
