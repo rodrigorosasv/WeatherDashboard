@@ -26,11 +26,14 @@ $(document).ready(function () {
             for(var lc=0; lc<localCitiesArr.length; lc++) {
                 //console.log(localCitiesArr[lc]);
                 var newCityItem="#item"+lc;
-                console.log(newCityItem);
+                //console.log(newCityItem);
                 var temp=$(newCityItem);
                 temp.text(localCitiesArr[lc]);
                 temp.attr("data-index",localCitiesArr[lc]);
-                temp.attr("id","storedCity");
+                temp.removeClass("hide");
+                var recentListItem=$("<li>");
+                //recentListItem.removeClass("hide");
+                //temp.attr("id","storedCity");
                 /*var newcityBtn=$("<button>");
                 newCityItem.append(newcityBtn);
                 newCityItem.attr("class","list-group-item");
@@ -64,7 +67,7 @@ $(document).ready(function () {
         recentSearch.unshift(cityName);
         var recentSearchArr=JSON.stringify(recentSearch);
         localStorage.setItem("recentCities",recentSearchArr);
-        console.log(recentSearch);
+        //console.log(recentSearch);
         var queryURL ="https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid="+apiKey+"&units="+units;
         $.ajax({
             url: queryURL,
@@ -117,6 +120,20 @@ $(document).ready(function () {
             }).then(function (responseUV) {
                 currentUvInd=responseUV.value;
                 newuvIndP.text("UV Index: "+currentUvInd);
+                //currentUvInd=5;
+                //console.log(currentUvInd)
+                if(currentUvInd<=2.99){
+                    newuvIndP.attr("style","background-color:green");
+                }else if(currentUvInd>=3&&currentUvInd<=5.99){
+                    newuvIndP.attr("style","background-color:yellow");
+                }else if(currentUvInd>=6&&currentUvInd<=7.99){
+                    newuvIndP.attr("style","background-color:orange");
+                }else if(currentUvInd>=8&&currentUvInd<=10.99){
+                    newuvIndP.attr("style","background-color:red");
+                }else if(currentUvInd>=11){
+                    newuvIndP.attr("style","background-color:violet");
+                }
+                //console.log(typeof(currentUvInd));
                 dateHour=responseUV.date;
                 //console.log(dateHour.toISOString());
                 //console.log(dateHour);
@@ -190,13 +207,7 @@ $(document).ready(function () {
         
         $("#mainInfo-section").empty();
         cityName=($(this).attr("data-index"));
-        //console.log(cityName);
-        //=$("#searchedCity").val();
-        //recentSearch.splice(1, 0, cityName);
-        //recentSearch.unshift(cityName);
-        //var recentSearchArr=JSON.stringify(recentSearch);
-        //localStorage.setItem("recentCities",recentSearchArr);
-        //console.log(recentSearch);
+
         var queryURL ="https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid="+apiKey+"&units="+units;
         $.ajax({
             url: queryURL,
@@ -218,7 +229,7 @@ $(document).ready(function () {
             var currentTemperature=response.main.temp;
             var currentHumidity=response.main.humidity;
             var currentWindS=response.wind.speed;
-            var currentUvInd="Dummy value";
+            var currentUvInd="";
             latitude=response.coord.lat;
             longitude=response.coord.lon;
             weatherIconID=response.weather[0].icon;
@@ -249,6 +260,17 @@ $(document).ready(function () {
             }).then(function (responseUV) {
                 currentUvInd=responseUV.value;
                 newuvIndP.text("UV Index: "+currentUvInd);
+                if(currentUvInd<=2.99){
+                    newuvIndP.attr("style","background-color:green");
+                }else if(currentUvInd>=3&&currentUvInd<=5.99){
+                    newuvIndP.attr("style","background-color:yellow");
+                }else if(currentUvInd>=6&&currentUvInd<=7.99){
+                    newuvIndP.attr("style","background-color:orange");
+                }else if(currentUvInd>=8&&currentUvInd<=10.99){
+                    newuvIndP.attr("style","background-color:red");
+                }else if(currentUvInd>=11){
+                    newuvIndP.attr("style","background-color:violet");
+                }
                 dateHour=responseUV.date;
                 //console.log(dateHour.toISOString());
                 //console.log(dateHour);
